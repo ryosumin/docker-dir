@@ -1,0 +1,31 @@
+web:
+    build: web
+    links:
+        - app
+    ports:
+        - "80:80"
+app:
+    build: app
+    environment:
+        #- MONGODB_URL=mongodb://db:27017/my_db
+        - MONGODB_URL=mongodb://$DB_HOST/my_db
+    working_dir: /cross-platform
+    #command: bash
+    #ports:
+    #    - "8080:8080"
+    expose:
+        - "8080"
+db:
+    image: mongo:latest
+    ports:
+        - "27017:27017"
+    volumes:
+        - /tmp:/data/db
+    #    - ~/WORK/benchmark/db/tmp:/tmp
+    #command: mongod --nojournal --smallfiles
+    command: mongod --smallfiles
+#jmeter:
+#    image: sampritavh/jmeter
+#    volumes:
+#        - jmeter:/tmp
+#    command: bash -c "jmeter-server & jmeter -n -t /tmp/jmeter-senario1.jmx -r"
