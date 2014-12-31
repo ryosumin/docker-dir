@@ -2,10 +2,9 @@ FROM google/debian:wheezy
 MAINTAINER liao@oneofthem.jp 
 
 # Update stuff
-RUN apt-get update
-
 # Install Python Setuptools
-RUN apt-get --no-install-recommends install -y python-setuptools build-essential python-dev libpq-dev ca-certificates git supervisor \
+RUN apt-get update && \
+ apt-get --no-install-recommends install -y python-setuptools build-essential python-dev libpq-dev ca-certificates git supervisor \
  && apt-get clean \
  && rm -r /var/lib/apt/lists/*
 
