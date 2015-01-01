@@ -19,7 +19,7 @@ WORKDIR /cross-platform
 RUN pip install -r /cross-platform/requirements.txt --allow-external mysql-connector-python \
 &&  pip install -r /cross-platform/requirements.txt --upgrade --allow-external mysql-connector-python
 ADD config /config
-RUN ln -s /config/* /etc/supervisor/conf.d/
+RUN ln -s /config/* /etc/supervisor/conf.d/ && ln -s production.cfg.example production.cfg
 RUN fab setup
 #CMD fab setup && gunicorn -b :8080 --worker-class socketio.sgunicorn.GeventSocketIOWorker wsgi:application
 CMD ["supervisord", "-n"]
