@@ -24,8 +24,8 @@ db:
     #    - ~/WORK/benchmark/db/tmp:/tmp
     #command: mongod --nojournal --smallfiles
     command: mongod --smallfiles
-#jmeter:
-#    image: sampritavh/jmeter
-#    volumes:
-#        - jmeter:/tmp
-#    command: bash -c "jmeter-server & jmeter -n -t /tmp/jmeter-senario1.jmx -r"
+jmeter:
+    image: sampritavh/jmeter
+    volumes:
+        - jmeter:/tmp
+    command: bash -c "jmeter-server & jmeter -n -t /tmp/jmeter-senario1.jmx -r"
