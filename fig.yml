@@ -13,9 +13,8 @@ app:
         #- MONGODB_URL=mongodb://db:27017/my_db
         - MONGODB_URL=mongodb://docker_db1/my_db
     working_dir: /cross-platform
-    #command: bash
-    #ports:
-    #    - "8080:8080"
+    volumes:
+        - /etc/hosts:/etc/hosts
     expose:
         - "8080"
 db:
@@ -24,9 +23,11 @@ db:
         - "27017:27017"
     volumes:
         - /tmp:/data/db
+        - /etc/hosts:/etc/hosts
     #    - ~/WORK/benchmark/db/tmp:/tmp
     #command: mongod --nojournal --smallfiles
     command: mongod --smallfiles
+
 jmeter:
     image: sampritavh/jmeter
     volumes:
