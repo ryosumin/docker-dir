@@ -5,7 +5,7 @@ web:
     ports:
         - "80:80"
     volumes:
-        - web/www:/www
+        - /var/www:/www
         - web/default.tmpl:/etc/nginx/conf.d/default.tmpl
 app:
     build: app

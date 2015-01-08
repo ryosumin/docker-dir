@@ -20,7 +20,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/v0.0.1/dockerize
     && tar -C /usr/local/bin -xvzf dockerize-linux-amd64-v0.0.1.tar.gz
 #RUN curl -L https://github.com/jwilder/dockerize/releases/download/v0.0.1/dockerize-linux-amd64-v0.0.1.tar.gz | tar xz -C /usr/local/bin
 
-ADD default.tmpl /etc/nginx/conf.d/default.tmpl
+#ADD default.tmpl /etc/nginx/conf.d/default.tmpl
 
 VOLUME ["/var/cache/nginx"]
 
