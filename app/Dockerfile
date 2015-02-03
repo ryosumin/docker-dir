@@ -1,25 +1,27 @@
 FROM google/debian:wheezy
-MAINTAINER liao@oneofthem.jp 
+MAINTAINER liao@oneofthem.jp
 
 # Update stuff
 # Install Python Setuptools
 RUN apt-get update && \
- apt-get --no-install-recommends install -y python-setuptools build-essential python-dev libpq-dev ca-certificates git supervisor \
+ apt-get --no-install-recommends install -y build-essential python-dev libpq-dev bzip2 wget ca-certificates git supervisor \
  && apt-get clean \
  && rm -r /var/lib/apt/lists/*
 
 # Install pip
-RUN easy_install pip
+RUN wget -q -O- https://bitbucket.org/squeaky/portable-pypy/downloads/pypy-2.4-linux_x86_64-portable.tar.bz2 | tar jxvf - \
+  && mv pypy-2.4-linux_x86_64-portable /opt/pypy-2.4 \
+  && rm -rf *.bz2 && ln -s /opt/pypy-2.4/bin/pypy /usr/bin/pypy \
+  && pypy /opt/pypy-2.4/bin/virtualenv-pypy --no-site-packages /opt/pypy-env \
+  && cd /opt/ \
 
-#ADD requirements.txt /tmp/requirements.txt
 COPY cross-platform /cross-platform
 #VOLUME ["cross-platform"]
 WORKDIR /cross-platform
-# Install requirements.txt
-RUN pip install -r /cross-platform/requirements.txt --allow-external mysql-connector-python \
-&&  pip install -r /cross-platform/requirements.txt --upgrade --allow-external mysql-connector-python
 ADD config /config
 RUN ln -s /config/* /etc/supervisor/conf.d/ && ln -s production.cfg.example production.cfg
-RUN fab setup
-#CMD fab setup && gunicorn -b :8080 --worker-class socketio.sgunicorn.GeventSocketIOWorker wsgi:application
+# Install requirements.txt
+RUN bash -c 'source /opt/pypy-env/bin/activate && pip install cython -r /cross-platform/requirements.txt && pip install -r /cross-platform/requirements.txt --upgrade --allow-external mysql-connector-python && fab setup'
 CMD ["supervisord", "-n"]
+#CMD ["bash"]
+

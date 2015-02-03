@@ -1,12 +1,15 @@
 web:
     build: web
-    links:
-        - app
+    #links: 
+    #    - app
     ports:
         - "80:80"
     volumes:
-        - /var/www:/www
+        - /dev/shm:/www:ro
         - web/default.tmpl:/etc/nginx/conf.d/default.tmpl
+        - web/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+    net: "host"
+
 app:
     build: app
     environment:
@@ -15,8 +18,11 @@ app:
     working_dir: /cross-platform
     volumes:
         - /etc/hosts:/etc/hosts
+        - app/config:/etc/supervisor/conf.d
+        - app/cross-platform/gunicorn.ini:/cross-platform/gunicorn.ini:ro
     expose:
         - "8080"
+
 db:
     image: mongo:latest
     ports:
