@@ -1,6 +1,7 @@
 FROM google/debian:wheezy
 MAINTAINER liao@oneofthem.jp
 
+COPY cross-platform /cross-platform
 # Update stuff
 # Install Python Setuptools
 RUN apt-get update && \
@@ -12,10 +13,8 @@ RUN apt-get update && \
 RUN wget -q -O- https://bitbucket.org/squeaky/portable-pypy/downloads/pypy-2.4-linux_x86_64-portable.tar.bz2 | tar jxvf - \
   && mv pypy-2.4-linux_x86_64-portable /opt/pypy-2.4 \
   && rm -rf *.bz2 && ln -s /opt/pypy-2.4/bin/pypy /usr/bin/pypy \
-  && pypy /opt/pypy-2.4/bin/virtualenv-pypy --no-site-packages /opt/pypy-env \
-  && cd /opt/ \
+  && pypy /opt/pypy-2.4/bin/virtualenv-pypy --no-site-packages /opt/pypy-env
 
-COPY cross-platform /cross-platform
 #VOLUME ["cross-platform"]
 WORKDIR /cross-platform
 ADD config /config
