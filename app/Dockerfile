@@ -20,7 +20,7 @@ WORKDIR /cross-platform
 ADD config /config
 RUN ln -s /config/* /etc/supervisor/conf.d/ && ln -s production.cfg.example production.cfg
 # Install requirements.txt
-RUN bash -c 'source /opt/pypy-env/bin/activate && pip install cython -r /cross-platform/requirements.txt && pip install -r /cross-platform/requirements.txt --upgrade --allow-external mysql-connector-python && fab setup'
+RUN bash -c 'source /opt/pypy-env/bin/activate && pip install -r /cross-platform/requirements.txt && pip install -r /cross-platform/requirements.txt --upgrade --allow-external mysql-connector-python && fab setup'
 CMD ["supervisord", "-n"]
 #CMD ["bash"]
 
