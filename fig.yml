@@ -1,12 +1,15 @@
 web:
-    build: web
+    #build: web
+    image: jwilder/nginx-proxy
     #links: 
     #    - app
     ports:
         - "80:80"
     volumes:
+        - /var/run/docker.sock:/tmp/docker.sock
         - /dev/shm:/www:ro
-        - web/default.tmpl:/etc/nginx/conf.d/default.tmpl
+        #- web/default.tmpl:/etc/nginx/conf.d/default.tmpl
+        - web/default.tmpl:/app/nginx.tmpl
         - web/conf/nginx.conf:/etc/nginx/nginx.conf:ro
     net: "host"
 
@@ -15,6 +18,7 @@ app:
     environment:
         #- MONGODB_URL=mongodb://db:27017/my_db
         - MONGODB_URL=mongodb://docker-db1/my_db
+        - VIRTUAL_HOST=app
     working_dir: /cross-platform
     volumes:
         - /etc/hosts:/etc/hosts
