@@ -1,6 +1,6 @@
 web:
     #build: web
-    image: jwilder/nginx-proxy
+    image: jwilder/nginx-proxy:latest
     #links: 
     #    - app
     ports:
