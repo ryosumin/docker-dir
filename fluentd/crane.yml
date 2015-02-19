@@ -1,0 +1,25 @@
+containers:
+  fluentd_it:
+    image: michaloo/fluentd
+    dockerfile: .
+    run:
+      volume:
+        - ".:/app"
+        - "/var/run/docker.sock:/tmp/docker.sock"
+        - "/var/lib/docker:/var/lib/docker"
+      env-file: [".env"]
+      interactive: true
+      tty: true
+      entrypoint: /bin/bash
+      cmd:
+        - -c
+        - "bash"
+      rm: true
+  fluentd_test:
+    image: michaloo/fluentd
+    dockerfile: .
+    run:
+      volume:
+        - "/var/run/docker.sock:/tmp/docker.sock"
+        - "/var/lib/docker:/var/lib/docker"
+      detach: true

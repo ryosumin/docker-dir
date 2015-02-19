@@ -1,0 +1,19 @@
+#!/bin/bash
+
+ES_HOST=${ELASTICSEARCH_PORT_9200_TCP_ADDR:-$ES_HOST}
+ES_PORT=${ELASTICSEARCH_PORT_9200_TCP_PORT:-$ES_PORT}
+
+mkdir -p /etc/fluentd
+echo '' > /etc/fluentd/fluentd.conf
+sed -e 's/{{LOG_ENV}}/'"$LOG_ENV"'/' config/fluentd.tmpl > /root/fluentd.tmpl
+
+set -m
+
+trap 'kill $(jobs -p)' EXIT
+#trap "exit" CHLD
+
+/usr/local/bin/fluentd -c /etc/fluentd/fluentd.conf &
+sleep 5
+/usr/local/bin/docker-gen -watch -notify "kill -s 1 $!" /root/fluentd.tmpl /etc/fluentd/fluentd.conf &
+
+wait

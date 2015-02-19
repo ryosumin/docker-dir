@@ -1,3 +1,20 @@
+fluentd:
+    build: fluentd
+    expose:
+        - "5140/udp"
+    volumes:
+        - /var/run/docker.sock:/tmp/docker.sock
+    #    - /var/lib/docker:/var/lib/docker
+    command: /app/bin/start
+
+logspout:
+    image: progrium/logspout
+    links:
+        - fluentd
+    volumes:
+        - /var/run/docker.sock:/tmp/docker.sock
+    command: syslog://fluentd:5140
+
 web:
     #build: web
     image: jwilder/nginx-proxy:latest
@@ -37,9 +54,3 @@ db:
     #    - ~/WORK/benchmark/db/tmp:/tmp
     #command: mongod --nojournal --smallfiles
     command: mongod --smallfiles
-
-jmeter:
-    image: sampritavh/jmeter
-    volumes:
-        - jmeter:/tmp
-    command: bash -c "jmeter-server & jmeter -n -t /tmp/jmeter-senario1.jmx -r"

@@ -1,0 +1,23 @@
+<source>
+  type syslog
+  port 5140
+  bind 0.0.0.0
+  format /^(?<time>[^\]]*) (?<host>[^ ]*) (?<process>[^\[]*)\[(?<process_id>[0-9]+)\]: (?<message>.*)$/
+  #time_format %b %d %H:%M:%S
+  time_format %FT%T%:z
+  tag raw
+</source>
+<match raw.**>
+  type rewrite_tag_filter
+  #capitalize_regex_backreference yes
+  rewriterule1 process ^(.+)_(.+)_[0-9]$    site.$1.$2
+</match>
+#<match raw.**>
+#  type record_reformer
+#  tag reformed.${process}
+#  #domain ${message.scan(/^(.*?)\|.*/).first.first}
+#</match>
+<match site.**>
+  type file
+  path /tmp/fluent_access
+</match>
