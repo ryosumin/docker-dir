@@ -9,6 +9,7 @@ fluentd:
     environment:
         - AWS_KEY_ID="{{ .Env.AWS_KEY_ID }}"
         - AWS_SEC_KEY="{{ .Env.AWS_SEC_KEY }}"
+        - AWS_S3_BUCKET= "{{ .Env.AWS_S3_BUCKET }}"
     command: /app/bin/start
 
 logspout:
