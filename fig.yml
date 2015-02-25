@@ -4,7 +4,11 @@ fluentd:
         - "5140/udp"
     volumes:
         - /var/run/docker.sock:/tmp/docker.sock
-    #    - /var/lib/docker:/var/lib/docker
+        - fluentd/config:/app/config
+        - fluentd/bin:/app/bin
+    environment:
+        - AWS_KEY_ID="{{ .Env.AWS_KEY_ID }}"
+        - AWS_SEC_KEY="{{ .Env.AWS_SEC_KEY }}"
     command: /app/bin/start
 
 logspout:
@@ -18,7 +22,7 @@ logspout:
 web:
     #build: web
     image: jwilder/nginx-proxy:latest
-    #links: 
+    #links:
     #    - app
     ports:
         - "80:80"
