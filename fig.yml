@@ -6,6 +6,7 @@ fluentd:
         - /var/run/docker.sock:/tmp/docker.sock
         - fluentd/config:/app/config
         - fluentd/bin:/app/bin
+        - fluentd/plugin:/app/plugin
     environment:
         - AWS_KEY_ID={{ .Env.AWS_KEY_ID }}
         - AWS_SEC_KEY={{ .Env.AWS_SEC_KEY }}

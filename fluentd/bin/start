@@ -12,7 +12,7 @@ set -m
 trap 'kill $(jobs -p)' EXIT
 #trap "exit" CHLD
 
-/usr/local/bin/fluentd -c /etc/fluentd/fluentd.conf &
+/usr/local/bin/fluentd -c /etc/fluentd/fluentd.conf -p /app/plugin/ &
 sleep 5
 /usr/local/bin/docker-gen -watch -notify "kill -s 1 $!" /root/fluentd.tmpl /etc/fluentd/fluentd.conf &
 
