@@ -38,7 +38,8 @@ web:
     net: "host"
 
 app:
-    build: app
+    #build: app
+    image: local/app
     environment:
         #- MONGODB_URL=mongodb://db:27017/my_db
         - MONGODB_URL=mongodb://docker-db1/my_db
@@ -47,7 +48,7 @@ app:
     volumes:
         - /etc/hosts:/etc/hosts
         - app/config:/etc/supervisor/conf.d
-        - app/cross-platform/gunicorn.ini:/cross-platform/gunicorn.ini:ro
+        #- app/cross-platform/gunicorn.ini:/cross-platform/gunicorn.ini:ro
     expose:
         - "8080"
 
