@@ -46,11 +46,11 @@ app:
         - VIRTUAL_HOST=app
     working_dir: /cross-platform
     volumes:
-        - /etc/hosts:/etc/hosts
         - app/config:/etc/supervisor/conf.d
         #- app/cross-platform/gunicorn.ini:/cross-platform/gunicorn.ini:ro
     expose:
         - "8080"
+    dns: 172.17.42.1
 
 db:
     image: mongo:latest
@@ -58,7 +58,7 @@ db:
         - "27017:27017"
     volumes:
         - /tmp:/data/db
-        - /etc/hosts:/etc/hosts
     #    - ~/WORK/benchmark/db/tmp:/tmp
     #command: mongod --nojournal --smallfiles
     command: mongod --smallfiles
+    dns: 172.17.42.1
